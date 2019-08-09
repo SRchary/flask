@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electric Distribution and Transmission Reporting Details. </title>
+
+    <script rel="stylesheet" href="Content/datepicker.css"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script type="text/javascript" src="Scripts/jquery-ui.js"></script>
+    <link rel="stylesheet" href="Content/bootstrap.min.css">
+    <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="Content/jquery-ui.css">
+    <!--<script src="Content/datepicker.js"></script>-->
+
+
+
+    <style>
+        html {
+            margin: 0;
+            padding: 0;
+            font-size: 62.5%;
+        }
+
+        body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: #ecf0f5;
+        }
+
+        .glyphicon {
+            font-size: 50px;
+        }
+
+        #cardbox {
+            margin-top: 3.5vw;
+        }
+
+        .card {
+            height: 12vw;
+            width:40vw;
+        }
+
+        #reporttype {
+            font-size: 1vw;
+        }
+
+        #selectdate {
+            font-size: 1vw;
+        }
+
+        #run_report {
+            margin-left: 14vw;
+            margin-top: 1vw;
+        }
+
+        #reportpanel {
+            margin-top: 1vw;
+            height: 39vw;
+        }
+
+
+        @media screen and (max-width: 1900px) {
+
+            #cardbox {
+                margin-top: 4.5vw;
+            }
+
+            #reportpanel {
+                margin-top: 1vw;
+                height: 53vw;
+            }
+
+            #run_report {
+                margin-left: 13vw;
+                margin-top: 1vw;
+            }
+
+            .card {
+                height: 17vw;
+                width:40vw;
+            }
+
+            #reporttype {
+                font-size: 1.5vw;
+            }
+
+            #selectdate {
+                font-size: 1.5vw;
+            }
+        }
+
+
+
+
+        h1 {
+            font-size: 1.8em;
+        }
+
+        .navbar {
+            -webkit-box-shadow: 0 8px 6px -6px #999;
+            -moz-box-shadow: 0 8px 6px -6px #999;
+            box-shadow: 0 10px 6px -6px #999;
+            background-color: #0072c6;
+            height: 1vw;
+            border: none;
+        }
+
+        .downloadbutton {
+            border: 1px solid #15aeec;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-family: Calibri;
+            padding: 2px 10px 2px 10px;
+            text-decoration: none;
+            display: inline-block;
+            text-shadow: -1px -1px 0 rgba(0,0,0,0.3);
+            font-weight: bold;
+            color: #FFFFFF;
+            background-color: #0072c6;
+            background-image: -webkit-gradient(linear, left top, left bottom, from(#1AB0EC), to(#127BA5));
+            background-image: -webkit-linear-gradient(top, #0072c6, #127BA5);
+            background-image: -moz-linear-gradient(top, #1AB0EC, #127BA5);
+            background-image: -ms-linear-gradient(top, #1AB0EC, #127BA5);
+            background-image: -o-linear-gradient(top, #1AB0EC, #127BA5);
+            background-image: linear-gradient(to bottom, #1AB0EC, #127BA5);
+            filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#49c0f0, endColorstr=#18607c);
+        }
+
+
+            .downloadbutton:hover {
+                border: 1px solid #1090c3;
+                background-color: #1ab0ec;
+                background-image: -webkit-gradient(linear, left top, left bottom, from(#1ab0ec), to(#1a92c2));
+                background-image: -webkit-linear-gradient(top, #1ab0ec, #1a92c2);
+                background-image: -moz-linear-gradient(top, #1ab0ec, #1a92c2);
+                background-image: -ms-linear-gradient(top, #1ab0ec, #1a92c2);
+                background-image: -o-linear-gradient(top, #1ab0ec, #1a92c2);
+                background-image: linear-gradient(to bottom, #1ab0ec, #1a92c2);
+                filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#1ab0ec, endColorstr=#1a92c2);
+            }
+
+        .border-style {
+            border: 2px solid;
+        }
+
+        .square1 {
+            padding: 4.5%;
+            margin-top: 5%;
+            margin-left: 7.5%;
+            border-radius: 0%;
+            width: 142%;
+            height: 10%;
+        }
+
+        .square2 {
+            padding: 2.2%;
+            margin-top: 5%;
+            margin-bottom: 1%;
+            margin-left: 23.5%;
+            width: 73%;
+            height: 50%;
+            border-radius: 0%;
+        }
+
+        .square3 {
+            margin-top: 0%;
+            margin-bottom: 5%;
+            margin-left: 11%;
+            width: 100%;
+            height: 80%;
+            border-radius: 5%;
+        }
+
+        .box-size {
+            height: 50%;
+        }
+
+        .position-style {
+            margin-left: 86.9%;
+            margin-top: 0%;
+            margin-bottom: 1%;
+        }
+
+        .margin-style-startDate {
+            margin-top: 15%;
+            width: 130%;
+        }
+
+        .margin-style-endDate {
+            margin-top: 4%;
+            width: 130%;
+        }
+
+        .margin-style-startDate-text {
+            margin-top: 25%;
+            font-size: 15px;
+        }
+
+        .margin-style-endDate-text {
+            margin-top: 23.5%;
+            font-size: 15px;
+        }
+
+        .img_calendar {
+            width: 43px;
+            height: 35px;
+            margin-top: 0.6%;
+            margin-bottom: 2.5%;
+        }
+
+        .text-style {
+            text-align: center;
+        }
+
+        .download_button {
+            text-align: right;
+            margin-right: 2%;
+            margin-top: 1%;
+            margin-bottom: 0.6%;
+        }
+
+        .background_color {
+            background-color: lightgoldenrodyellow;
+        }
+
+        .dataframe {
+            background-color: lightyellow;
+            width: 80%;
+            font-size: 20px;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background-color: #428bca;
+            /* border-color: #357ebd; */
+        }
+    </style>
+</head>
+<body style="font-family: Calibri; font-size: 14px;height:100%;  background-color:#ecf0f5;">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+
+
+        <div class="navbar-header">
+
+            <img src="content/logo-footer.png" style="margin:0px;padding:0px;height:49px;" />
+
+
+            <b style="font-size:26px; color:white;"> Compliance Asset Data Reporting </b>
+        </div>
+        <ul class="nav navbar-nav" style="float:right;right:1vw;font-size:1vw;">
+
+            <li><a href="http://wwwt2/myitservices/forms/intake/424" class="active" style="color:white;line-height:25px;">Support</a></li>
+            <li><a style="color:white;line-height:25px;" href="http://wwwt2/MyITServices/tsc">Help</a></li>
+
+        </ul>
+
+    </nav>
+
+    <!--<div id="Title" style="background-color:#0072c6; font-size:16px;line-height:0.75; margin-right:-11.2%;">
+        <div>
+            <img style="height:50px; margin-right:10px;" src="Content/logo-footer.png" />
+            <p style="font-size:26px;color:white; display:inline;">
+                <b style="vertical-align: bottom;line-height: 1.4;">Electric Assets Compliance Data Reports</b>
+            </p>
+
+            <p style="font-size:16px;float:right;color:white;vertical-align:bottom;line-height:3.65; margin-right:10%;">
+                &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                <a style="color:white;" href="http://wwwintqat2/myitservices/forms/intake/424" target="_blank">Support</a> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+                <a style="color:white;" href="http://wwwt2/MyITServices/tsc" target="_blank">Help</a> &nbsp;&nbsp;&nbsp;&nbsp;
+            </p>
+        </div>
+        <div style="background-color: #feb555; color: #feb555; padding: 0.6%">
+            <p style="display: inline; font-size: 14px; height:22px;color:black;">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-home"></i>
+                <a href="/" style="color:black;"><b>Home</b></a>
+            </p>
+
+
+        </div>-->
+
+
+    <div class="row col-lg-12">
+        <div class="col-lg-12" id="cardbox">
+            <div class="col-sm-6 " style="align-items:center;">
+                <div class="card" style="margin-left:10%; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);   background-color: white">
+                    <form id="radio_box" action="">
+                        <div style="background-color:#043763; border-radius:0px;box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" class="well-sm">
+
+                            <h5 id="reporttype" class="card-title" style="margin-left: 4%; color: white; }">Select Report Type</h5>
+
+                        </div>
+                        <input type="radio" id="grc" style="margin-top:3%; margin-left: 4%" name="Report" value="grc"> General Rate Case (GRC 4.2.2.2)<br>
+                        <input id="ferc422" type="radio" style="margin-top:3%; margin-left: 4%" name="Report" value="FERC1"> Federal Energy Regulatory Commission (FERC 422-423)<br>
+                        <input type="radio" style="margin-top:3%; margin-left: 4%" name="Report" value="FERC"> Federal Energy Regulatory Commission (FERC 424-425)<br>
+                        <input type="radio" style="margin-top:3%; margin-left: 4%" name="Report" value="Adhoc"> Ad hoc Report<br>
+                    </form>
+
+                    <!--<button type="button" style="font-size:15px;margin-left: 10%;" class="position-style downloadbutton">Home</button>-->
+                </div>
+            </div>
+            <div class="col-sm-6">
+
+                <!--<div class="row square2 border-style" style="margin-top: 2.36%; background-color: white;">
+                    <div class="col-sm-4">
+                        <div class="square3">
+                            <p></p>
+                            <p>
+                                <b style="margin-left: 30.7%;">Select Date</b>
+                            </p>
+                            <div class="text-style margin-style-startDate-text">Start Date:</div>
+                            <div class="text-style margin-style-endDate-text">End Date:</div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-8">
+                        <div class="row" style="margin-left: -8px;">
+                            <div class="margin-style-startDate">
+                                <input type="text" id="startDate-picker" value="01/01/2017" style="text-align:center; height:35px; width: 41%; margin-top: -4%; margin-left: -2%; border-color:#f1f1f1;" placeholder="Select start date "><input><span class="date_click"><img id="startDatePickerImage" class="img_calendar" style="cursor: pointer;" src="Content/calendar-icon.png"><img /></span>
+                            </div>
+                            <div class="margin-style-endDate">
+                                <input type="text" id="endDate-picker" value="12/31/2017" style="text-align:center; height:35px; width: 41%; margin-left: -2%; border-color:#f1f1f1;" placeholder="Select end date "><input><span class="date_click"><img id="endDatePickerImage" class="img_calendar" style="cursor: pointer;" src="Content/calendar-icon.png"><img /></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>-->
+                <div class="card" style="margin-left:10%; box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);   background-color: white">
+                    <div class="card-body">
+                        <div style="background-color:#043763;border-radius:0px;box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" class="well-sm">
+
+                            <h5 id="selectdate" style="margin-left: 4%; color: white; ">Select Date</h5>
+
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <form>
+                                    <div class="row">
+                                        <div class="form-group" style="margin-left:2vw;margin-top:1vw;">
+                                            <label for="usr">Start Date:</label>
+
+                                            <input type="text" class="form-control" id="startDate-picker" value="01/01/2017" style="text-align:center;display:inline;  width:10vw;   border-color:#f1f1f1;" placeholder="Select start date "><span class="date_click"><img id="startDatePickerImage" class="img_calendar" style="cursor: pointer;" src="Content/calendar-icon.png"><img /></span>
+
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+
+
+                            <div class="col-sm-6">
+                                <div class="form-group" style="margin-top:1vw;">
+                                    <label for="usr">End Date:</label>
+                                    <input type="text" class="form-control" id="endDate-picker" value="12/31/2017" style="text-align:center; width:10vw;display:inline;  border-color:#f1f1f1;" placeholder="Select end date "><span class="date_click"><img id="endDatePickerImage" class="img_calendar" style="cursor: pointer;" src="Content/calendar-icon.png"><img /></span>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+
+                                <button type="button" class="btn  waves-effec btn-primary  " id="run_report" onclick="return validate(); " style="border-radius:0px; float: right;
+    margin-right: 1vw;background-color:#00A6FB !important;  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);color: white;font-size:1vw;">Run report</button>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <!--<button type="button" style="font-size:15px;margin-left: 10%;" class="position-style downloadbutton">Home</button>-->
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div id="reportpanel">
+
+        <div class="panel panel-default" style="background-color:white;box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);border-radius:1px; height:100%;width:98%;margin-left:1%; ">
+            <div class="panel-heading" style="font-size:1vw;background-color:#333333;color:white;">
+                <a id="downloadfilename"> <button type="button" class="btn btn-primary" id="run_report1"  style="border-radius:0px;display:inline-block; background-color:#00A6FB !important;  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);color: white;margin-top:-7px;font-size:1vw;float:right;"> Download CSV</button></a>
+
+                Report Views
+
+            </div>
+            <div class="panel-body " style="color:black;">
+                <div id="report_data">
+                    <table id="datatable" style="visibility:hidden;" border="1" class="dataframe">
+                        <tbody>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>PACIFIC GAS AND ELECTRIC COMPANY</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>2017 GENERAL RATE CASE APPLICATION  15-09-001</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>ELECTRIC DISTRIBUTION</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>TABLE 3-5</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td>ELECTRIC DISTRIBUTION 2017 UNIT REPORT</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>LINE NO.</td>
+                                <td>DESCRIPTION</td>
+                                <td>2017 Recorded Units</td>
+                            </tr>
+                            <tr>
+                                <td>1A</td>
+                                <td>Poles replaced through Pole Replacement and ot...</td>
+                                <td>[number]</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>1B</td>
+                                <td>Pole age histogram and table</td>
+                                <td>[number]</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>1C</td>
+                                <td>Pole stats-depreciation study</td>
+                                <td>[number]</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Miles of paper-insulated lead sheath cable (PI...</td>
+                                <td>[number]</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3A</td>
+                                <td>Miles of HMWPE cable, respectively, replaced a...</td>
+                                <td>[number]</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3B</td>
+                                <td>Miles of HMWPE cable, respectively, rejuvated ...</td>
+                                <td>[number]</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Miles of overhead conductor replaced across al...</td>
+                                <td>[number]</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Grasshopper switches replaced across all Compa...</td>
+                                <td>[number]</td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+
+                                <td>6</td>
+                                <td>Overhead fuse installations across all  Compan...</td>
+                                <td>[number]</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="background-color:#ffeeba;">
+                    <h5 class="modal-title" id="exampleModalLabel">Invalid Entry</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-text">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+
+
+            $('#radio_box').change(function () {
+
+                var report_type = $('input[name=Report]:checked').val();
+
+                if ($('input[name=Report]:checked').val() != "grc") {
+                    document.getElementById("datatable").style.visibility = "hidden";
+                }
+
+                if ($('input[name=Report]:checked').val() == "FERC1") {
+                    $("#startDate-picker").prop("disabled", true);
+                 $("#endDate-picker").prop("disabled", true);
+                 document.getElementById("endDatePickerImage").style.visibility = "hidden";
+
+
+
+
+
+                    document.getElementById("run_report").style.visibility = "hidden";
+
+
+                    document.getElementById("startDatePickerImage").style.visibility = "hidden";
+                    document.getElementById("endDatePickerImage").setAttribute('disabled', true);
+
+                }
+                else {
+                    document.getElementById("endDatePickerImage").style.visibility = "visible";
+                    document.getElementById("startDatePickerImage").style.visibility = "visible";
+                    $("#startDate-picker").prop("disabled", false);
+                    $("#endDate-picker").prop("disabled", false);
+                    document.getElementById("run_report").style.visibility = "visible";
+                }
+            });
+
+
+
+            $("#startDate-picker").datepicker({});
+
+
+            $("#endDate-picker").datepicker();
+
+            $('#startDatePickerImage').click(function () {
+                $('#startDate-picker').datepicker("show");
+            });
+            $('#endDatePickerImage').click(function () {
+                $('#endDate-picker').datepicker('show');
+            });
+        });
+
+        function check() {
+            if (document.getElementById('ferc422').checked) { alert(); }
+
+
+                //if ($("#ferc422").attr("checked" , true)) {
+                //    alert();
+                //    $("#startDate-picker").prop("disabled", true);
+                //    $("#endDate-picker").prop("disabled", true);
+
+                //}
+            else {
+
+                $("#startDate-picker").prop("disabled", false);
+                $("#endDate-picker").prop("disabled", false);
+
+
+            }
+
+
+        }
+        function validate() {
+
+
+
+
+            var t = new Date("01/01/2017");
+            console.log(Date.parse(t));
+            console.log(Date.parse($('#endDate-picker').val()));
+            console.log(Date.parse(start_report_date));
+
+
+
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            var today = mm + '/' + dd + '/' + yyyy;
+
+            console.log(Date.parse(today));
+            Date.parse(end_report_date);
+            var report_type = $('input[name=Report]:checked').val();
+            var start_report_date = $('#startDate-picker').val()
+            var end_report_date = $('#endDate-picker').val()
+
+            if (report_type == "" || report_type == undefined) {
+                $("#modal-text").html("Please Select Report Type.");
+                $("#exampleModal").modal();
+
+            }
+            else if (start_report_date == "" || start_report_date == undefined) {
+
+                $("#modal-text").html("Please Select Start Date.");
+                $("#exampleModal").modal();
+            }
+            else if (end_report_date == "" || end_report_date == undefined) {
+
+                $("#modal-text").html("Please Select End Date.");
+                $("#exampleModal").modal();
+
+
+            }
+            else if (Date.parse(start_report_date) > Date.parse(end_report_date)) {
+                $("#modal-text").html("Invalid Date Range! Start Date Should be Less Than End Date.");
+                $("#exampleModal").modal();
+
+            }
+            else if (Date.parse($('#startDate-picker').val()) < Date.parse(t)) {
+                $("#modal-text").html("Report Start date cannot be before 01/01/2017.");
+                $("#exampleModal").modal();
+
+
+            }
+            else if (Date.parse($('#endDate-picker').val()) > Date.parse(today)) {
+
+                $("#modal-text").html("End date cannot be set in future.");
+                $("#exampleModal").modal();
+
+            }
+
+
+
+            else {
+                //get_reports(report_type, start_report_date, end_report_date)
+                document.getElementById("datatable").style.visibility = "visible";
+
+
+
+            }
+        }
+        $("#run_report1").on('click',function(e) {
+
+
+            var t = new Date("01/01/2017");
+            console.log(Date.parse(t));
+            console.log(Date.parse($('#endDate-picker').val()));
+            console.log(Date.parse(start_report_date));
+
+
+
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1; //January is 0!
+
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            var today = mm + '/' + dd + '/' + yyyy;
+
+            console.log(Date.parse(today));
+            Date.parse(end_report_date);
+            var report_type = $('input[name=Report]:checked').val();
+            var start_report_date = $('#startDate-picker').val()
+            var end_report_date = $('#endDate-picker').val()
+
+            if (report_type == "" || report_type == undefined) {
+                $("#modal-text").html("Please Select Report Type.");
+                $("#exampleModal").modal();
+
+            }
+            else if (start_report_date == "" || start_report_date == undefined) {
+
+                $("#modal-text").html("Please Select Start Date.");
+                $("#exampleModal").modal();
+            }
+            else if (end_report_date == "" || end_report_date == undefined) {
+
+                $("#modal-text").html("Please Select End Date.");
+                $("#exampleModal").modal();
+
+
+            }
+            else if (Date.parse(start_report_date) > Date.parse(end_report_date)) {
+                $("#modal-text").html("Invalid Date Range! Start Date Should be Less Than End Date.");
+                $("#exampleModal").modal();
+
+            }
+            else if (Date.parse($('#startDate-picker').val()) < Date.parse(t)) {
+                $("#modal-text").html("Report Start date cannot be before 01/01/2017.");
+                $("#exampleModal").modal();
+
+
+            }
+            else if (Date.parse($('#endDate-picker').val()) > Date.parse(today)) {
+
+                $("#modal-text").html("End date cannot be set in future.");
+                $("#exampleModal").modal();
+
+            }
+
+            else {
+                console.log(report_type);
+               // get_reports(report_type, start_report_date, end_report_date)
+                if ($('input[name=Report]:checked').val() == "FERC1") {
+                    window.location = "Content/FERC Form 1_Pages 422-423_TLine Stats_MockUp Update (1).xlsx";
+                   // document.getElementById("downloadfilename").href = "Content/FERC Form 1_Pages 422-423_TLine Stats_MockUp Update (1).xlsx";
+
+
+                }
+                else if ($('input[name=Report]:checked').val() == "grc") {
+                    window.location = "Content/GRC 4_2_2_2_YEAR.xlsx";
+
+                    //document.getElementById("downloadfilename").href = "content/grc 4_2_2_2_year.xlsx";
+                }
+
+
+
+            }
+            function get_reports(report_type, start_report_date, end_report_date) {
+                $.ajax({
+                    url: "/grc_home",
+                    type: "POST",
+                    data: {
+                        'report_type': report_type,
+                        'start_report_date': start_report_date,
+                        'end_report_date': end_report_date
+                    },
+                    success: function (return_data) {
+                        $('#report_data').html(return_data.grc_reports)
+                        $("#download_report").attr("href", "/download/" + return_data.download_file)
+                    }
+                });
+            }
+        })
+    </script>
+
+</body>
+</html>
