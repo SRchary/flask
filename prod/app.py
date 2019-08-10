@@ -743,5 +743,31 @@ def check_lock_status():
 
     return jsonify(return_data)
 
+
+@app.route( "/lock_year", methods=['POST'])
+def lock_year():
+    return_data = {"error":1,"message":"please Try again" ,"locked_count":0}
+    data = request.data
+    post_data = json.loads(data)
+    selected_year = ""
+    selected_type = 0
+    if post_data.get("year" ,-1) != -1 :
+        selected_year = post_data['year']
+    if post_data.get("job_type" ,-1) != -1 :
+        selected_type = post_data['job_type']
+
+
+    try:
+        result = helper.lock_year(mongo,selected_year,selected_type)
+        return_data['locked_count'] =100#result
+
+    except Exception as e:
+        return_data['message'] =str(e)
+
+    return jsonify(return_data)
+
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)

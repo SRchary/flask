@@ -871,3 +871,50 @@ def project_update_unset(mongo ,where_condation={} ,update_data= {}, upsert_valu
 
     result = mongo.db[collection_name].update(where_condation ,{'$unset':update_data} ,upsert=upsert_value , multi =multi_value)
     return result
+
+def lock_year(mongo ,selected_year='' ,check_job_type =1 ):
+    # 1 = overhead ; 2 == underground
+    return_count = 0
+    statges =[]
+
+    if check_job_type ==1:
+        project_completion_date = "$oh_estimated_completion_date"
+        is_itlocked =  "overhead.is_itlocked"
+    else:
+        project_completion_date = "$ug_estimated_completion_date"
+        is_itlocked =  "underground.is_itlocked"
+
+    stage_one = {'$project':{'year': { '$year': project_completion_date },"job_type":1,"overhead":1,"underground":1}}
+    stage_tow ={'$match':{ "year":selected_year ,is_itlocked:0}}
+    stage_three = { '$match': {'$or': [ { 'job_type': check_job_type }, { 'job_type': 3 } ] }}
+    #count_stage ={'$count':"totalCount"}
+    statges.append(stage_one)
+    statges.append(stage_tow)
+    statges.append(stage_three)
+    #statges.append(count_stage)
+
+    result = list(mongo.db[collection_name].aggregate(statges))
+    temp_list =[]
+    if len(result) >0:
+        for doc in list(result):
+            temp_list.append(doc["_id"])
+            #print(type(doc))
+
+    where_condation ={}
+    update_data ={}
+    if len(temp_list)>0:
+        where_condation["_id"] ={"$in":temp_list}
+        if check_job_type ==1:
+            where_condation["overhead"] ={"$exists":1}
+            where_condation["overhead.is_itlocked"] ={"$exists":1}
+            update_data['overhead.is_itlocked'] =1
+            mongo.db[collection_name].update(where_condation ,{'$set':update_data} ,upsert=False , multi =True)
+        else:
+            where_condation["underground"] ={"$exists":1}
+            where_condation["underground.is_itlocked"] ={"$exists":1}
+            update_data['underground.is_itlocked'] =1
+            mongo.db[collection_name].update(where_condation ,{'$set':update_data} ,upsert=False , multi =True)
+
+
+
+    return len(result)
