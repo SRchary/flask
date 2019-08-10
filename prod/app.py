@@ -766,6 +766,31 @@ def lock_year():
 
     return jsonify(return_data)
 
+@app.route( "/remove_document", methods=['POST'])
+def remove_document():
+    return_data = {"error":1,"message":"please Try again"}
+    data = request.data
+    post_data = json.loads(data)
+    selected_year = ""
+    selected_type = 0
+    if post_data.get("id" ,-1) != -1 :
+        id = str(post_data['id'])
+        result = helper.remove_document(mongo ,ObjectId(id))
+        if result.deleted_count >0:
+            return_data['error'] =0
+            return_data['message'] ="Deleted Success"
+        else:
+            return_data['error'] =1
+            return_data['message'] ="Document is Not Found..!"
+
+
+    else:
+        return_data['error'] =1
+        return_data['message'] ="Project id Is Required"
+
+    return jsonify(return_data)
+
+
 
 
 

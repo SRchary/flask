@@ -918,3 +918,7 @@ def lock_year(mongo ,selected_year='' ,check_job_type =1 ):
 
 
     return len(result)
+
+def remove_document(mongo ,id=''):
+    result = mongo.db[collection_name].delete_one({'_id': id})
+    return result
