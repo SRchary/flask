@@ -775,13 +775,75 @@ def remove_document():
     selected_type = 0
     if post_data.get("id" ,-1) != -1 :
         id = str(post_data['id'])
-        result = helper.remove_document(mongo ,ObjectId(id))
-        if result.deleted_count >0:
-            return_data['error'] =0
-            return_data['message'] ="Deleted Success"
-        else:
-            return_data['error'] =1
-            return_data['message'] ="Document is Not Found..!"
+        wher_query ={}
+        wher_query["_id"] =ObjectId(id)
+        result = helper.find_project(mongo ,wher_query)
+        #print(result)
+        #return_data["search_result"] = result['documents']
+        result_count = result['total_records']
+        if result_count > 0:
+            document =list(result['documents'])[0]
+            oh_year_not_locked =True;
+            ug_year_not_locked =True;
+            if document['job_type'] ==1:
+
+                date_time_str = str(document['oh_estimated_completion_date'])
+                date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')
+                oh_estimated_completion_year = date_time_obj.year
+                oh_lock_year = helper.check_islocked(mongo,oh_estimated_completion_year ,1)
+                if oh_lock_year >0:
+                    return_data["oh_error"] = "Overhead Project is Locked in this ("+ str(oh_lock_year) +") Year"
+                    oh_year_not_locked =False;
+
+
+
+            elif document['job_type'] ==2:
+
+                date_time_str = str(document['ug_estimated_completion_date'])
+                date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')
+                ug_estimated_completion_year = date_time_obj.year
+                ug_lock_year = helper.check_islocked(mongo,ug_estimated_completion_year ,2)
+                if ug_lock_year >0:
+                    return_data["ug_error"] = "Underground Project is Locked in this ("+ str(ug_lock_year) +") Year"
+                    ug_year_not_locked =False;
+
+
+            elif document['job_type'] ==3:
+                date_time_str = str(document['oh_estimated_completion_date'])
+                date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')
+                oh_estimated_completion_year = date_time_obj.year
+
+                oh_lock_year = helper.check_islocked(mongo,oh_estimated_completion_year ,1)
+                if oh_lock_year >0:
+                    return_data["oh_error"] = "Overhead Project is Locked in this ("+ str(oh_lock_year) +") Year"
+                    oh_year_not_locked =False;
+
+                date_time_str = str(document['ug_estimated_completion_date'])
+                date_time_obj = datetime.datetime.strptime(date_time_str, '%Y-%m-%d %H:%M:%S')
+                ug_estimated_completion_year = date_time_obj.year
+
+                ug_lock_year = helper.check_islocked(mongo,ug_estimated_completion_year ,2)
+                if ug_lock_year >0:
+                    return_data["ug_error"] = "UnderGround Project is Locked in this ("+ str(ug_lock_year) +") Year"
+                    ug_year_not_locked =False;
+
+            if oh_year_not_locked and ug_year_not_locked:
+                del_res = helper.remove_document(mongo ,ObjectId(id))
+
+                if del_res.deleted_count >0:
+                    return_data["error"] =0
+                    return_data['message'] = "Deleted Successfully"
+                else:
+                    return_data["error"] =1
+                    return_data['message'] = "Somthing went Wrong. Please Try Again"
+            else:
+                return_data["error"] =1
+                return_data['message'] = "Year Is  locked , You can`t delete this Project"
+
+
+
+
+
 
 
     else:
