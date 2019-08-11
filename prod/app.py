@@ -839,11 +839,9 @@ def remove_document():
             else:
                 return_data["error"] =1
                 return_data['message'] = "Year Is  locked , You can`t delete this Project"
-
-
-
-
-
+        else:
+            return_data['error'] =1
+            return_data['message'] ="Selecte Project is Not Found..!"
 
 
     else:
