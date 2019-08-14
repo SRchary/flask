@@ -876,13 +876,16 @@ def lock_year(mongo ,selected_year='' ,check_job_type =1 ):
     # 1 = overhead ; 2 == underground
     return_count = 0
     statges =[]
-
+    current_type = "overhead"
     if check_job_type ==1:
         project_completion_date = "$oh_estimated_completion_date"
         is_itlocked =  "overhead.is_itlocked"
+        current_type = "overhead"
+
     else:
         project_completion_date = "$ug_estimated_completion_date"
         is_itlocked =  "underground.is_itlocked"
+        current_type = "underground"
 
     stage_one = {'$project':{'year': { '$year': project_completion_date },"job_type":1,"overhead":1,"underground":1}}
     stage_tow ={'$match':{ "year":selected_year ,is_itlocked:0}}
@@ -895,9 +898,71 @@ def lock_year(mongo ,selected_year='' ,check_job_type =1 ):
 
     result = list(mongo.db[collection_name].aggregate(statges))
     temp_list =[]
+    not_filled_docs =[]
+    not_filled_docs_ids =[]
+    proj_completion_fields = ["from" ,"to" ,"length","which_type" ,"ave" ,"present","ultimate" ,"size", "spec","config" ,"voltage"]
     if len(result) >0:
         for doc in list(result):
-            temp_list.append(doc["_id"])
+            this_doc_id = str(doc["_id"])
+            temp_list.append(this_doc_id)
+
+
+            if doc.get( current_type,-1) !=-1:
+                temp_curent_type_data = doc[current_type]
+                temp_count= 0
+               #check adadion
+                if temp_curent_type_data.get("addition" ,-1) != -1:
+                    temp_current_addition_data =temp_curent_type_data.get("addition")
+                    if temp_current_addition_data.get("proj_completion" ,-1) !=-1 :
+                        temp_current_addition_proj_completion = temp_current_addition_data['proj_completion']
+                        value_count =0
+                        null_value_count =0
+                        for key in proj_completion_fields:
+                            if bool(temp_current_addition_proj_completion.get(key)):
+                                value_count =value_count+1
+                            else:
+                                null_value_count =null_value_count+1
+                        if  value_count >0:
+                            if value_count != len(proj_completion_fields):
+                                if this_doc_id not in not_filled_docs_ids:
+                                    not_filled_docs_ids.append(this_doc_id)
+
+
+                        else:
+                            temp_count =temp_count+1
+
+                if temp_curent_type_data.get("removal" ,-1) != -1:
+                    temp_current_removal_data =temp_curent_type_data.get("removal")
+                    if temp_current_removal_data.get("proj_completion" ,-1) !=-1 :
+                        temp_current_addition_proj_completion = temp_current_removal_data['proj_completion']
+                        value_count =0
+                        null_value_count =0
+                        for key in proj_completion_fields:
+                            if bool(temp_current_addition_proj_completion.get(key)):
+                                value_count =value_count+1
+                            else:
+                                null_value_count =null_value_count+1
+                        if  value_count >0:
+                            if value_count != len(proj_completion_fields):
+                                if this_doc_id not in not_filled_docs_ids:
+                                    not_filled_docs_ids.append(this_doc_id)
+
+
+                        else:
+                            temp_count =temp_count+1
+
+
+
+
+
+
+            else:
+                not_filled_docs.append({"id":this_doc_id , "job_number":doc['job_number'] ,"job_owner":doc['job_owner'] })
+                if this_doc_id not in not_filled_docs_ids:
+                    not_filled_docs_ids.append(this_doc_id)
+
+
+
             #print(type(doc))
 
     where_condation ={}
