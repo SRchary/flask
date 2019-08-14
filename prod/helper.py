@@ -927,33 +927,24 @@ def lock_year(mongo ,selected_year='' ,check_job_type =1 ):
                                 if this_doc_id not in not_filled_docs_ids:
                                     not_filled_docs_ids.append(this_doc_id)
 
+                            #check business_finance need atleast one value
+                            if value_count == len(proj_completion_fields):
+                                if temp_current_addition_data.get('business_finance' ,-1) !=-1:
+                                    for key, value in temp_current_addition_data['business_finance'].items():
+                                        if value !='':
+                                            if this_doc_id not in not_filled_docs_ids:
+                                                not_filled_docs_ids.append(this_doc_id)
 
-                        else:
-                            temp_count =temp_count+1
 
-                if temp_curent_type_data.get("removal" ,-1) != -1:
-                    temp_current_removal_data =temp_curent_type_data.get("removal")
-                    if temp_current_removal_data.get("proj_completion" ,-1) !=-1 :
-                        temp_current_addition_proj_completion = temp_current_removal_data['proj_completion']
-                        value_count =0
-                        null_value_count =0
-                        for key in proj_completion_fields:
-                            if bool(temp_current_addition_proj_completion.get(key)):
-                                value_count =value_count+1
-                            else:
-                                null_value_count =null_value_count+1
-                        if  value_count >0:
-                            if value_count != len(proj_completion_fields):
-                                if this_doc_id not in not_filled_docs_ids:
-                                    not_filled_docs_ids.append(this_doc_id)
+                                else:
+                                    if this_doc_id not in not_filled_docs_ids:
+                                        not_filled_docs_ids.append(this_doc_id)
+
+
 
 
                         else:
                             temp_count =temp_count+1
-
-
-
-
 
 
             else:
