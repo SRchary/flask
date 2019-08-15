@@ -750,7 +750,7 @@ def lock_year():
     data = request.data
     post_data = json.loads(data)
     selected_year = ""
-    selected_type = 0
+    selected_type = 1
     if post_data.get("year" ,-1) != -1 :
         selected_year = post_data['year']
     if post_data.get("job_type" ,-1) != -1 :
