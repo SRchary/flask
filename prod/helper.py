@@ -1076,7 +1076,7 @@ def lock_year(mongo ,selected_year='' ,check_job_type =1 ):
 
 
 
-
+    print(return_data)
     return return_data
 
 def remove_document(mongo ,id=''):
