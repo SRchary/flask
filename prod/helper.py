@@ -1078,7 +1078,7 @@ def lock_year(mongo ,selected_year=''  ):
             result = mongo.db[collection_name].update(where_condation ,{'$set':update_data} ,upsert=False , multi =True)
             return_data['update_result'] =result['n']
     else:
-        return_data['update_result'] = False
+        return_data['update_result'] = 0
         return_data['not_filled_docs'] = not_filled_docs
 
 
