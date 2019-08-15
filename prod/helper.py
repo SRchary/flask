@@ -1053,7 +1053,7 @@ def lock_year(mongo ,selected_year='' ,check_job_type =1 ):
 
             #print(type(doc))
 
-
+    return_data ={"update_result":False ,"not_filled_docs":[]}
     if len(temp_list)>0 and len(not_filled_docs) ==0:
         where_condation ={}
         update_data ={}
@@ -1062,16 +1062,22 @@ def lock_year(mongo ,selected_year='' ,check_job_type =1 ):
             where_condation["overhead"] ={"$exists":1}
             where_condation["overhead.is_itlocked"] ={"$exists":1}
             update_data['overhead.is_itlocked'] =1
-            mongo.db[collection_name].update(where_condation ,{'$set':update_data} ,upsert=False , multi =True)
+            result = mongo.db[collection_name].update(where_condation ,{'$set':update_data} ,upsert=False , multi =True)
+            return_data['update_result'] =result
         else:
             where_condation["underground"] ={"$exists":1}
             where_condation["underground.is_itlocked"] ={"$exists":1}
             update_data['underground.is_itlocked'] =1
-            mongo.db[collection_name].update(where_condation ,{'$set':update_data} ,upsert=False , multi =True)
+            result = mongo.db[collection_name].update(where_condation ,{'$set':update_data} ,upsert=False , multi =True)
+            return_data['update_result'] =result
+    else:
+        return_data['update_result'] = False
+        return_data['not_filled_docs'] = not_filled_docs
 
 
 
-    return len(result)
+
+    return return_data
 
 def remove_document(mongo ,id=''):
     result = mongo.db[collection_name].delete_one({'_id': id})
