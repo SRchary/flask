@@ -758,7 +758,7 @@ def lock_year():
 
 
     try:
-        result = helper.lock_year(mongo,selected_year,selected_type)
+        result = helper.lock_year(mongo,selected_year)
         return_data['locked_count'] =100#result
 
     except Exception as e:
