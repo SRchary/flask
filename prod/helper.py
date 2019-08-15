@@ -887,7 +887,7 @@ def lock_year(mongo ,selected_year='' ,check_job_type =1 ):
         is_itlocked =  "underground.is_itlocked"
         current_type = "underground"
 
-    stage_one = {'$project':{'year': { '$year': project_completion_date },"job_type":1,"overhead":1,"underground":1}}
+    stage_one = {'$project':{'year': { '$year': project_completion_date },"job_number":1, "job_owner":1,"job_type":1,"overhead":1,"underground":1}}
     stage_tow ={'$match':{ "year":selected_year ,is_itlocked:0}}
     stage_three = { '$match': {'$or': [ { 'job_type': check_job_type }, { 'job_type': 3 } ] }}
     #count_stage ={'$count':"totalCount"}
