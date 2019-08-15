@@ -909,7 +909,7 @@ def lock_year(mongo ,selected_year='' ,check_job_type =1 ):
 
             if doc.get( current_type,-1) !=-1:
                 temp_curent_type_data = doc[current_type]
-                temp_count= 0
+
                #check adadion
                 is_valid_addition = False
                 if temp_curent_type_data.get("addition" ,-1) != -1:
@@ -951,11 +951,89 @@ def lock_year(mongo ,selected_year='' ,check_job_type =1 ):
                                         not_filled_docs_ids.append(this_doc_id)
                                         not_filled_docs.append({"id":this_doc_id , "job_number":doc['job_number'] ,"job_owner":doc['job_owner'] })
 
+                #check reconductor
+                is_valid_reconductor = False
+                if temp_curent_type_data.get("reconductor" ,-1) != -1:
+                    temp_current_reconductor_data =temp_curent_type_data.get("reconductor")
+                    if temp_current_reconductor_data.get("proj_completion" ,-1) !=-1 :
+                        temp_current_reconductor_proj_completion = temp_current_reconductor_data['proj_completion']
+                        value_count =0
+                        null_value_count =0
+                        for key in proj_completion_fields:
+                            if bool(temp_current_reconductor_proj_completion.get(key)):
+                                value_count =value_count+1
+                            else:
+                                null_value_count =null_value_count+1
+                        if  value_count >0:
+                            if value_count != len(proj_completion_fields):
+                                if this_doc_id not in not_filled_docs_ids:
+                                    not_filled_docs_ids.append(this_doc_id)
+                                    not_filled_docs.append({"id":this_doc_id , "job_number":doc['job_number'] ,"job_owner":doc['job_owner'] })
+
+                            #check business_finance need atleast one value
+                            if value_count == len(proj_completion_fields):
+
+                                if temp_current_addition_data.get('business_finance' ,-1) !=-1:
+                                    count_business_finance =0;
+
+                                    for key, value in temp_current_addition_data['business_finance'].items():
+                                        if value !='':
+                                            count_business_finance =count_business_finance+1
+
+                                    if count_business_finance >0:
+                                        is_valid_reconductor = True
+                                    else:
+                                        is_valid_reconductor = False
+                                        if this_doc_id not in not_filled_docs_ids:
+                                            not_filled_docs_ids.append(this_doc_id)
+                                            not_filled_docs.append({"id":this_doc_id , "job_number":doc['job_number'] ,"job_owner":doc['job_owner'] })
+                                else:
+                                    if this_doc_id not in not_filled_docs_ids:
+                                        not_filled_docs_ids.append(this_doc_id)
+                                        not_filled_docs.append({"id":this_doc_id , "job_number":doc['job_number'] ,"job_owner":doc['job_owner'] })
+
+                #check Removal removal
+                is_valid_removal = False
+                if temp_curent_type_data.get("removal" ,-1) != -1:
+                    temp_current_removal_data =temp_curent_type_data.get("removal")
+                    if temp_current_removal_data.get("proj_completion" ,-1) !=-1 :
+                        temp_current_removal_proj_completion = temp_current_removal_data['proj_completion']
+                        value_count =0
+                        null_value_count =0
+                        for key in proj_completion_fields:
+                            if bool(temp_current_removal_proj_completion.get(key)):
+                                value_count =value_count+1
+                            else:
+                                null_value_count =null_value_count+1
+                        if  value_count >0:
+                            if value_count != len(proj_completion_fields):
+                                if this_doc_id not in not_filled_docs_ids:
+                                    not_filled_docs_ids.append(this_doc_id)
+                                    not_filled_docs.append({"id":this_doc_id , "job_number":doc['job_number'] ,"job_owner":doc['job_owner'] })
+
+                            #check business_finance need atleast one value
+                            if value_count == len(proj_completion_fields):
+
+                                if temp_current_addition_data.get('business_finance' ,-1) !=-1:
+                                    count_business_finance =0;
+
+                                    for key, value in temp_current_addition_data['business_finance'].items():
+                                        if value !='':
+                                            count_business_finance =count_business_finance+1
+
+                                    if count_business_finance >0:
+                                        is_valid_reconductor = True
+                                    else:
+                                        is_valid_reconductor = False
+                                        if this_doc_id not in not_filled_docs_ids:
+                                            not_filled_docs_ids.append(this_doc_id)
+                                            not_filled_docs.append({"id":this_doc_id , "job_number":doc['job_number'] ,"job_owner":doc['job_owner'] })
+                                else:
+                                    if this_doc_id not in not_filled_docs_ids:
+                                        not_filled_docs_ids.append(this_doc_id)
+                                        not_filled_docs.append({"id":this_doc_id , "job_number":doc['job_number'] ,"job_owner":doc['job_owner'] })
 
 
-
-                        else:
-                            temp_count =temp_count+1
 
 
             else:
