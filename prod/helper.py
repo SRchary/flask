@@ -904,7 +904,7 @@ def lock_year(mongo ,selected_year='' ,check_job_type =1 ):
     if len(result) >0:
         for doc in list(result):
             this_doc_id = str(doc["_id"])
-            temp_list.append(this_doc_id)
+            temp_list.append(ObjectId(this_doc_id))
 
 
             if doc.get( current_type,-1) !=-1:
