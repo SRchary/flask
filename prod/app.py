@@ -177,19 +177,37 @@ def project_initiation():
 
     oh_estimated_completion_date = ''
     oh_locked_count =0
+    oh_year =''
+    ug_year =''
 
     ug_estimated_completion_date = ''
     ug_locked_count =0
-    if ( job_type ==1 or job_type ==3 ) and dataDict.get("oh_estimated_completion_date", -1) != -1:
+    if ( job_type ==1) and dataDict.get("oh_estimated_completion_date", -1) != -1:
         oh_estimated_completion_date = dataDict.get("oh_estimated_completion_date")
         oh_estimated_completion_date = datetime.datetime.strptime(oh_estimated_completion_date, "%m/%d/%Y")
         oh_year = oh_estimated_completion_date.year
         oh_locked_count = helper.check_islocked(mongo ,oh_year ,1)
-    elif ( job_type ==2 or job_type ==3 ) and dataDict.get("og_estimated_completion_date", -1) != -1:
+    elif ( job_type ==2 ) and dataDict.get("og_estimated_completion_date", -1) != -1:
         ug_estimated_completion_date = dataDict.get("og_estimated_completion_date")
         ug_estimated_completion_date = datetime.datetime.strptime(ug_estimated_completion_date, "%m/%d/%Y")
         ug_year = ug_estimated_completion_date.year
         ug_locked_count = helper.check_islocked(mongo ,ug_year ,2)
+
+    elif job_type ==3 and dataDict.get("oh_estimated_completion_date", -1) != -1 and dataDict.get("og_estimated_completion_date", -1) != -1 :
+
+        #job_type 1
+        oh_estimated_completion_date = dataDict.get("oh_estimated_completion_date")
+        oh_estimated_completion_date = datetime.datetime.strptime(oh_estimated_completion_date, "%m/%d/%Y")
+        oh_year = oh_estimated_completion_date.year
+        oh_locked_count = helper.check_islocked(mongo ,oh_year ,1)
+
+
+        #job type =2
+        ug_estimated_completion_date = dataDict.get("og_estimated_completion_date")
+        ug_estimated_completion_date = datetime.datetime.strptime(ug_estimated_completion_date, "%m/%d/%Y")
+        ug_year = ug_estimated_completion_date.year
+        ug_locked_count = helper.check_islocked(mongo ,ug_year ,2)
+
     else:
         job_type =-1
 
@@ -276,19 +294,37 @@ def project_initiation_update():
 
     oh_estimated_completion_date = ''
     oh_locked_count =0
+    oh_year =''
+    ug_year =''
 
     ug_estimated_completion_date = ''
     ug_locked_count =0
-    if ( job_type ==1 or job_type ==3 ) and dataDict.get("oh_estimated_completion_date", -1) != -1:
+    if ( job_type ==1) and dataDict.get("oh_estimated_completion_date", -1) != -1:
         oh_estimated_completion_date = dataDict.get("oh_estimated_completion_date")
         oh_estimated_completion_date = datetime.datetime.strptime(oh_estimated_completion_date, "%m/%d/%Y")
         oh_year = oh_estimated_completion_date.year
         oh_locked_count = helper.check_islocked(mongo ,oh_year ,1)
-    elif ( job_type ==2 or job_type ==3 ) and dataDict.get("og_estimated_completion_date", -1) != -1:
+    elif ( job_type ==2 ) and dataDict.get("og_estimated_completion_date", -1) != -1:
         ug_estimated_completion_date = dataDict.get("og_estimated_completion_date")
         ug_estimated_completion_date = datetime.datetime.strptime(ug_estimated_completion_date, "%m/%d/%Y")
         ug_year = ug_estimated_completion_date.year
         ug_locked_count = helper.check_islocked(mongo ,ug_year ,2)
+
+    elif job_type ==3 and dataDict.get("oh_estimated_completion_date", -1) != -1 and dataDict.get("og_estimated_completion_date", -1) != -1 :
+
+        #job_type 1
+        oh_estimated_completion_date = dataDict.get("oh_estimated_completion_date")
+        oh_estimated_completion_date = datetime.datetime.strptime(oh_estimated_completion_date, "%m/%d/%Y")
+        oh_year = oh_estimated_completion_date.year
+        oh_locked_count = helper.check_islocked(mongo ,oh_year ,1)
+
+
+        #job type =2
+        ug_estimated_completion_date = dataDict.get("og_estimated_completion_date")
+        ug_estimated_completion_date = datetime.datetime.strptime(ug_estimated_completion_date, "%m/%d/%Y")
+        ug_year = ug_estimated_completion_date.year
+        ug_locked_count = helper.check_islocked(mongo ,ug_year ,2)
+
     else:
         job_type =-1
 
