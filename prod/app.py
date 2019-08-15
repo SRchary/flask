@@ -768,7 +768,7 @@ def lock_year():
             return_data['error'] = 0
 
         else:
-            return_data['message'] = "sucess Fully Updated..!"
+            return_data['message'] = "Sucess Fully Updated..!"
             return_data['error'] = 0
 
     except Exception as e:
