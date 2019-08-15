@@ -1060,7 +1060,7 @@ def lock_year(mongo ,selected_year=''  ):
 
                 #print(type(doc))
 
-    return_data ={"update_result":False ,"not_filled_docs":[]}
+    return_data ={"update_result":0 ,"not_filled_docs":[]}
     if len(temp_list)>0 and len(not_filled_docs) ==0:
         where_condation ={}
         update_data ={}
@@ -1076,7 +1076,7 @@ def lock_year(mongo ,selected_year=''  ):
             where_condation["underground.is_itlocked"] ={"$exists":1}
             update_data['underground.is_itlocked'] =1
             result = mongo.db[collection_name].update(where_condation ,{'$set':update_data} ,upsert=False , multi =True)
-            return_data['update_result'] =result
+            return_data['update_result'] =result['n']
     else:
         return_data['update_result'] = False
         return_data['not_filled_docs'] = not_filled_docs
