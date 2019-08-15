@@ -177,23 +177,21 @@ def project_initiation():
 
     oh_estimated_completion_date = ''
     oh_locked_count =0
+
+    ug_estimated_completion_date = ''
+    ug_locked_count =0
     if ( job_type ==1 or job_type ==3 ) and dataDict.get("oh_estimated_completion_date", -1) != -1:
         oh_estimated_completion_date = dataDict.get("oh_estimated_completion_date")
         oh_estimated_completion_date = datetime.datetime.strptime(oh_estimated_completion_date, "%m/%d/%Y")
         oh_year = oh_estimated_completion_date.year
         oh_locked_count = helper.check_islocked(mongo ,oh_year ,1)
-    else:
-        pass
-
-    ug_estimated_completion_date = ''
-    ug_locked_count =0
-    if ( job_type ==2 or job_type ==3 ) and dataDict.get("og_estimated_completion_date", -1) != -1:
+    elif ( job_type ==2 or job_type ==3 ) and dataDict.get("og_estimated_completion_date", -1) != -1:
         ug_estimated_completion_date = dataDict.get("og_estimated_completion_date")
         ug_estimated_completion_date = datetime.datetime.strptime(ug_estimated_completion_date, "%m/%d/%Y")
         ug_year = ug_estimated_completion_date.year
         ug_locked_count = helper.check_islocked(mongo ,ug_year ,2)
     else:
-        pass
+        job_type =-1
 
     if oh_locked_count >0 or ug_locked_count > 0 :
 
@@ -208,7 +206,7 @@ def project_initiation():
         pass
 
     is_itlocked = 0;  # Default Value =0 not locked
-    if( job_number != '' and job_owner != '' and job_owner != '' and transmission_line_name != '' and job_type >= 0  ):
+    if( job_number != '' and job_owner != '' and job_owner != '' and transmission_line_name != '' and job_type > 0  ):
         try:
             result = helper.find_project(mongo ,{"job_number":job_number})
             if result['total_records'] <=0:
