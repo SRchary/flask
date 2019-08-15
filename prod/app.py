@@ -749,17 +749,27 @@ def lock_year():
     return_data = {"error":1,"message":"please Try again" ,"locked_count":0}
     data = request.data
     post_data = json.loads(data)
-    selected_year = ""
+    selected_year = 1970
     selected_type = 1
-    if post_data.get("year" ,-1) != -1 :
-        selected_year = post_data['year']
+
     if post_data.get("job_type" ,-1) != -1 :
         selected_type = post_data['job_type']
+
+    if post_data.get("year" ,-1) != -1 :
+        selected_year = post_data['year']
 
 
     try:
         result = helper.lock_year(mongo,selected_year)
-        return_data['locked_count'] =100#result
+        return_data['not_filled_docs'] = result['not_filled_docs']
+        return_data['locked_count'] = result['update_result']
+        if len(return_data['not_filled_docs']) >0:
+            return_data['message'] = "Selected Year is not Locked. Due to invalid Data in Records"
+            return_data['error'] = 0
+
+        else:
+            return_data['message'] = "sucess Fully Updated..!"
+            return_data['error'] = 0
 
     except Exception as e:
         return_data['message'] =str(e)
