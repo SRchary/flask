@@ -762,7 +762,7 @@ def lock_year():
         return_data['locked_count'] =100#result
 
     except Exception as e:
-        return_data['message'] =str(e)+"fgdf dfg d"
+        return_data['message'] =str(e)
 
     return jsonify(return_data)
 
