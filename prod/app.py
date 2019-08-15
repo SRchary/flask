@@ -182,6 +182,8 @@ def project_initiation():
         oh_estimated_completion_date = datetime.datetime.strptime(oh_estimated_completion_date, "%m/%d/%Y")
         oh_year = oh_estimated_completion_date.year
         oh_locked_count = helper.check_islocked(mongo ,oh_year ,1)
+    else:
+        pass
 
     ug_estimated_completion_date = ''
     ug_locked_count =0
@@ -190,6 +192,8 @@ def project_initiation():
         ug_estimated_completion_date = datetime.datetime.strptime(ug_estimated_completion_date, "%m/%d/%Y")
         ug_year = ug_estimated_completion_date.year
         ug_locked_count = helper.check_islocked(mongo ,ug_year ,2)
+    else:
+        pass
 
     if oh_locked_count >0 or ug_locked_count > 0 :
 
