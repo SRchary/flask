@@ -1033,6 +1033,13 @@ def lock_year(mongo ,selected_year='' ,check_job_type =1 ):
                                         not_filled_docs_ids.append(this_doc_id)
                                         not_filled_docs.append({"id":this_doc_id , "job_number":doc['job_number'] ,"job_owner":doc['job_owner'] })
 
+                #final Checking . Check Current Document have valid data in adadion OR reconductor OR removal
+                if is_valid_addition or is_valid_reconductor or is_valid_removal:
+                    pass
+                else:
+                    if this_doc_id not in not_filled_docs_ids:
+                        not_filled_docs_ids.append(this_doc_id)
+                        not_filled_docs.append({"id":this_doc_id , "job_number":doc['job_number'] ,"job_owner":doc['job_owner'] })
 
 
 
