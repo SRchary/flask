@@ -199,7 +199,7 @@ def project_initiation():
             return_data["ug_error"] = "Under Ground Project is Locked in this ("+ str(ug_year) +") Year"
 
         return_data['error'] =1
-        return_data['message'] ="Project Selected Year is locked"
+        return_data['message'] ="Selected Project Year is locked"
         return jsonify(return_data)
         pass
 
