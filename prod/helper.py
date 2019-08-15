@@ -877,6 +877,11 @@ def lock_year(mongo ,selected_year='' ,check_job_type =1 ):
     # 1 = overhead ; 2 == underground
     return_count = 0
     statges =[]
+
+    temp_list =[]
+    not_filled_docs =[]
+    not_filled_docs_ids =[]
+
     current_type = "overhead"
     if check_job_type ==1:
         project_completion_date = "$oh_estimated_completion_date"
@@ -898,9 +903,7 @@ def lock_year(mongo ,selected_year='' ,check_job_type =1 ):
     #statges.append(count_stage)
 
     result = list(mongo.db[collection_name].aggregate(statges))
-    temp_list =[]
-    not_filled_docs =[]
-    not_filled_docs_ids =[]
+
     proj_completion_fields = ["from" ,"to" ,"length","which_type" ,"ave" ,"present","ultimate" ,"size", "spec","config" ,"voltage"]
     if len(result) >0:
         for doc in list(result):
