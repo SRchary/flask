@@ -1059,8 +1059,8 @@ def lock_year(mongo ,selected_year='' ,check_job_type =1 ):
         update_data ={}
         where_condation["_id"] ={"$in":temp_list}
         if check_job_type ==1:
-            where_condation["overhead"] ={"$exists":1}
-            where_condation["overhead.is_itlocked"] ={"$exists":1}
+            #where_condation["overhead"] ={"$exists":1}
+            #where_condation["overhead.is_itlocked"] ={"$exists":1}
             update_data['overhead.is_itlocked'] =1
             result = mongo.db[collection_name].update(where_condation ,{'$set':update_data} ,upsert=False , multi =True)
             return_data['update_result'] =result
