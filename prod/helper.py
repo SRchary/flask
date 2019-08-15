@@ -1053,9 +1053,10 @@ def lock_year(mongo ,selected_year='' ,check_job_type =1 ):
 
             #print(type(doc))
 
-    where_condation ={}
-    update_data ={}
-    if len(temp_list)>0:
+
+    if len(temp_list)>0 and len(not_filled_docs) ==0:
+        where_condation ={}
+        update_data ={}
         where_condation["_id"] ={"$in":temp_list}
         if check_job_type ==1:
             where_condation["overhead"] ={"$exists":1}
