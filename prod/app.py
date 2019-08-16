@@ -330,10 +330,15 @@ def project_initiation_update():
 
     if oh_locked_count >0 or ug_locked_count > 0 :
 
-        if ( job_type ==1 or job_type ==3 ) and oh_locked_count >0:
+        if ( job_type ==1 ) and oh_locked_count >0:
             return_data["oh_error"] = "Overhead Project is Locked in this ("+ str(oh_year) +") Year"
-        if ( job_type ==2 or job_type ==3 ) and ug_locked_count >0:
+        elif ( job_type ==2 ) and ug_locked_count >0:
             return_data["ug_error"] = "Under Ground Project is Locked in this ("+ str(ug_year) +") Year"
+        elif job_type == 3 and (oh_locked_count >0 or ug_locked_count > 0 ):
+            if oh_locked_count >0:
+                return_data["oh_error"] = "Overhead Project is Locked in this ("+ str(oh_year) +") Year"
+            if ug_locked_count >0:
+                return_data["ug_error"] = "Under Ground Project is Locked in this ("+ str(ug_year) +") Year"
 
         return_data['error'] =1
         return_data['message'] ="Selected Project Year is locked"
@@ -378,8 +383,11 @@ def project_initiation_update():
                     update_data['job_owner'] =job_owner
                     update_data['transmission_line_name'] =transmission_line_name
                     update_data['job_type'] =job_type
-                    update_data['oh_estimated_completion_date'] =oh_estimated_completion_date
-                    update_data['ug_estimated_completion_date'] =ug_estimated_completion_date
+                    update_data['oh_estimated_completion_date'] = oh_estimated_completion_date
+                    update_data['ug_estimated_completion_date'] = ug_estimated_completion_date
+                    update_data["overhead.estimated_completion_date"] = oh_estimated_completion_date
+                    update_data["underground.estimated_completion_date"] = ug_estimated_completion_date
+
                     update_res =helper.project_update(mongo ,{"_id":ObjectId(id)} ,update_data, upsert_value =False ,multi_value =False)
                     if update_res["n"] >0 :
                         return_data["error"] =0
