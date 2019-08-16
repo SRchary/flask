@@ -1124,7 +1124,7 @@ def lock_year(mongo ,selected_year=''  ):
                 #print(type(doc))
 
     return_data ={"update_result":0 ,"not_filled_docs":[]}
-    if len(temp_list)>0 and len(not_filled_docs) ==0:
+    if len(temp_list)>0 and len(not_filled_docs) >0:
 
 
         if len(overhead_not_filled_docs) >0:
