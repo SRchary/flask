@@ -859,6 +859,37 @@ def lock_year():
 
     return jsonify(return_data)
 
+
+
+@app.route( "/unlock_year", methods=['POST'])
+def unlock_year():
+    return_data = {"error":1,"message":"please Try again" ,"locked_count":0}
+    data = request.data
+    post_data = json.loads(data)
+    selected_year = 1970
+    selected_type = 1
+
+    if post_data.get("job_type" ,-1) != -1 :
+        selected_type = post_data['job_type']
+
+    if post_data.get("year" ,-1) != -1 :
+        selected_year = post_data['year']
+
+
+    try:
+        result = helper.unlock_year(mongo,selected_year)
+
+        return_data['locked_count'] = result['update_result_count']
+        return_data['message'] = "Successfully updated"
+        return_data['error'] = 0
+
+    except Exception as e:
+        return_data['message'] =str(e)
+
+    return jsonify(return_data)
+
+
+
 @app.route( "/remove_document", methods=['POST'])
 def remove_document():
     return_data = {"error":1,"message":"please Try again"}
