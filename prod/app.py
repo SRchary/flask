@@ -878,7 +878,7 @@ def unlock_year():
     try:
         result = helper.unlock_year(mongo,selected_year)
 
-        return_data['locked_count'] = result['update_result_count']
+        return_data['unlocked_count'] = result['update_result_count']
         return_data['message'] = "Successfully updated"
         return_data['error'] = 0
 
