@@ -902,11 +902,11 @@ def lock_year(mongo ,selected_year=''  ):
         stage_one = {'$project':{'year': { '$year': project_completion_date },"job_number":1, "job_owner":1,"job_type":1,"overhead":1,"underground":1}}
         stage_tow ={'$match':{ "year":selected_year ,is_itlocked:0}}
         stage_three = { '$match': {'$or': [ { 'job_type': check_job_type }, { 'job_type': 3 } ] }}
-        #count_stage ={'$count':"totalCount"}
+
         statges.append(stage_one)
         statges.append(stage_tow)
-        statges.append(stage_three)
-        #statges.append(count_stage)
+        #statges.append(stage_three)
+
 
         result = list(mongo.db[collection_name].aggregate(statges))
 
@@ -1078,7 +1078,7 @@ def lock_year(mongo ,selected_year=''  ):
     if len(temp_list)>0 and len(not_filled_docs) ==0:
 
 
-        if len(overhead_not_filled_docs) >0:
+        if len(overhead_filled_docs) >0:
             where_condation ={}
             update_data ={}
             where_condation["_id"] ={"$in":overhead_filled_docs}
@@ -1088,7 +1088,7 @@ def lock_year(mongo ,selected_year=''  ):
             result = mongo.db[collection_name].update(where_condation ,{'$set':update_data} ,upsert=False , multi =True)
             return_data['update_result'] =return_data['update_result']+result['n']
 
-        if len(underground_not_filled_docs)>0:
+        if len(underground_filled_docs)>0:
             where_condation ={}
             update_data ={}
             where_condation["_id"] ={"$in":underground_filled_docs}
@@ -1105,6 +1105,76 @@ def lock_year(mongo ,selected_year=''  ):
 
     print(return_data)
     return return_data
+
+
+def unlock_year(mongo ,selected_year=''  ):
+    # 1 = overhead ; 2 == underground
+    return_count = 0
+    statges =[]
+
+    temp_list =[]
+    not_filled_docs =[]
+    overhead_filled_docs =[]
+    underground_filled_docs =[]
+
+    not_filled_docs_ids =[]
+    job_types =[1,2]
+    for jtype in job_types:
+        check_job_type =jtype
+
+        current_type = "overhead"
+        if check_job_type ==1:
+            project_completion_date = "$oh_estimated_completion_date"
+            is_itlocked =  "overhead.is_itlocked"
+            current_type = "overhead"
+
+        else:
+            project_completion_date = "$ug_estimated_completion_date"
+            is_itlocked =  "underground.is_itlocked"
+            current_type = "underground"
+
+        stage_one = {'$project':{'year': { '$year': project_completion_date },"job_number":1, "job_owner":1,"job_type":1,"overhead":1,"underground":1}}
+        stage_tow ={'$match':{ "year":selected_year }}
+        stage_three = { '$match': {'$or': [ { 'job_type': check_job_type }, { 'job_type': 3 } ] }}
+        
+        statges.append(stage_one)
+        statges.append(stage_tow)
+        #statges.append(stage_three)
+        result = list(mongo.db[collection_name].aggregate(statges))
+        if len(result) >0:
+            for doc in list(result):
+                this_doc_id = str(doc["_id"])
+                temp_list.append(ObjectId(this_doc_id))
+                if check_job_type ==1:
+                    overhead_filled_docs.append(this_doc_id)
+                if check_job_type ==2:
+                    underground_filled_docs.append(this_doc_id)
+
+    if len(overhead_filled_docs) >0 or len(underground_filled_docs) >0:
+        if len(overhead_filled_docs) >0:
+                where_condation ={}
+                update_data ={}
+                where_condation["_id"] ={"$in":overhead_filled_docs}
+                where_condation["overhead"] ={"$exists":1}
+                where_condation["overhead.is_itlocked"] ={"$exists":1}
+                update_data['overhead.is_itlocked'] =0
+                result = mongo.db[collection_name].update(where_condation ,{'$set':update_data} ,upsert=False , multi =True)
+                return_data['update_result_count'] =return_data['update_result_count']+result['n']
+
+        if len(underground_filled_docs)>0:
+            where_condation ={}
+            update_data ={}
+            where_condation["_id"] ={"$in":underground_filled_docs}
+            where_condation["underground"] ={"$exists":1}
+            where_condation["underground.is_itlocked"] ={"$exists":1}
+            update_data['underground.is_itlocked'] =0
+            result = mongo.db[collection_name].update(where_condation ,{'$set':update_data} ,upsert=False , multi =True)
+            return_data['update_result_count'] =return_data['update_result_count']+result['n']
+
+    return return_data
+
+
+
 
 def remove_document(mongo ,id=''):
     result = mongo.db[collection_name].delete_one({'_id': id})
