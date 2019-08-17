@@ -872,7 +872,6 @@ def unlock_year():
     if post_data.get("year" ,-1) != -1 :
         selected_year = post_data['year']
 
-
     try:
         result = helper.unlock_year(mongo,selected_year)
 
