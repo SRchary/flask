@@ -1113,11 +1113,8 @@ def unlock_year(mongo ,selected_year=''  ):
     statges =[]
 
     temp_list =[]
-    not_filled_docs =[]
     overhead_filled_docs =[]
     underground_filled_docs =[]
-
-    not_filled_docs_ids =[]
     job_types =[1,2]
     for jtype in job_types:
         check_job_type =jtype
@@ -1136,7 +1133,7 @@ def unlock_year(mongo ,selected_year=''  ):
         stage_one = {'$project':{'year': { '$year': project_completion_date },"job_number":1, "job_owner":1,"job_type":1,"overhead":1,"underground":1}}
         stage_tow ={'$match':{ "year":selected_year }}
         stage_three = { '$match': {'$or': [ { 'job_type': check_job_type }, { 'job_type': 3 } ] }}
-        
+
         statges.append(stage_one)
         statges.append(stage_tow)
         #statges.append(stage_three)
@@ -1149,7 +1146,8 @@ def unlock_year(mongo ,selected_year=''  ):
                     overhead_filled_docs.append(this_doc_id)
                 if check_job_type ==2:
                     underground_filled_docs.append(this_doc_id)
-
+    return_data = {}
+    return_data['update_result_count'] =0;
     if len(overhead_filled_docs) >0 or len(underground_filled_docs) >0:
         if len(overhead_filled_docs) >0:
                 where_condation ={}

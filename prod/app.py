@@ -868,7 +868,6 @@ def unlock_year():
     post_data = json.loads(data)
     selected_year = 1970
     selected_type = 1
-
     if post_data.get("job_type" ,-1) != -1 :
         selected_type = post_data['job_type']
 
