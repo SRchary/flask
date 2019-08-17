@@ -880,8 +880,8 @@ def lock_year(mongo ,selected_year=''  ):
 
     temp_list =[]
     not_filled_docs =[]
-    overhead_not_filled_docs =[]
-    underground_not_filled_docs =[]
+    overhead_filled_docs =[]
+    underground_filled_docs =[]
 
     not_filled_docs_ids =[]
     job_types =[1,2]
@@ -915,6 +915,10 @@ def lock_year(mongo ,selected_year=''  ):
             for doc in list(result):
                 this_doc_id = str(doc["_id"])
                 temp_list.append(ObjectId(this_doc_id))
+                if check_job_type ==1:
+                    overhead_filled_docs.append(this_doc_id)
+                if check_job_type ==2:
+                    underground_filled_docs.append(this_doc_id)
 
 
                 if doc.get( current_type,-1) !=-1:
@@ -935,11 +939,6 @@ def lock_year(mongo ,selected_year=''  ):
                                     null_value_count =null_value_count+1
                             if  value_count >0:
                                 if value_count != len(proj_completion_fields):
-                                    if check_job_type ==1:
-                                        overhead_not_filled_docs.append(this_doc_id)
-                                    if check_job_type ==2:
-                                        underground_not_filled_docs.append(this_doc_id)
-
                                     if this_doc_id not in not_filled_docs_ids:
                                         not_filled_docs_ids.append(this_doc_id)
                                         not_filled_docs.append({"id":this_doc_id , "job_number":doc['job_number'] ,"job_owner":doc['job_owner'] })
@@ -958,19 +957,10 @@ def lock_year(mongo ,selected_year=''  ):
                                             is_valid_addition = True
                                         else:
                                             is_valid_addition = False
-                                            if check_job_type ==1:
-                                                overhead_not_filled_docs.append(this_doc_id)
-                                            if check_job_type ==2:
-                                                underground_not_filled_docs.append(this_doc_id)
-
                                             if this_doc_id not in not_filled_docs_ids:
                                                 not_filled_docs_ids.append(this_doc_id)
                                                 not_filled_docs.append({"id":this_doc_id , "job_number":doc['job_number'] ,"job_owner":doc['job_owner'] })
                                     else:
-                                        if check_job_type ==1:
-                                            overhead_not_filled_docs.append(this_doc_id)
-                                        if check_job_type ==2:
-                                            underground_not_filled_docs.append(this_doc_id)
 
                                         if this_doc_id not in not_filled_docs_ids:
                                             not_filled_docs_ids.append(this_doc_id)
@@ -991,10 +981,6 @@ def lock_year(mongo ,selected_year=''  ):
                                     null_value_count =null_value_count+1
                             if  value_count >0:
                                 if value_count != len(proj_completion_fields):
-                                    if check_job_type ==1:
-                                        overhead_not_filled_docs.append(this_doc_id)
-                                    if check_job_type ==2:
-                                        underground_not_filled_docs.append(this_doc_id)
 
                                     if this_doc_id not in not_filled_docs_ids:
                                         not_filled_docs_ids.append(this_doc_id)
@@ -1015,21 +1001,10 @@ def lock_year(mongo ,selected_year=''  ):
                                         else:
                                             is_valid_reconductor = False
 
-                                            if check_job_type ==1:
-                                                overhead_not_filled_docs.append(this_doc_id)
-                                            if check_job_type ==2:
-                                                underground_not_filled_docs.append(this_doc_id)
-
-
                                             if this_doc_id not in not_filled_docs_ids:
                                                 not_filled_docs_ids.append(this_doc_id)
                                                 not_filled_docs.append({"id":this_doc_id , "job_number":doc['job_number'] ,"job_owner":doc['job_owner'] })
                                     else:
-                                        if check_job_type ==1:
-                                            overhead_not_filled_docs.append(this_doc_id)
-                                        if check_job_type ==2:
-                                            underground_not_filled_docs.append(this_doc_id)
-
                                         if this_doc_id not in not_filled_docs_ids:
                                             not_filled_docs_ids.append(this_doc_id)
                                             not_filled_docs.append({"id":this_doc_id , "job_number":doc['job_number'] ,"job_owner":doc['job_owner'] })
@@ -1049,10 +1024,6 @@ def lock_year(mongo ,selected_year=''  ):
                                     null_value_count =null_value_count+1
                             if  value_count >0:
                                 if value_count != len(proj_completion_fields):
-                                    if check_job_type ==1:
-                                        overhead_not_filled_docs.append(this_doc_id)
-                                    if check_job_type ==2:
-                                        underground_not_filled_docs.append(this_doc_id)
 
                                     if this_doc_id not in not_filled_docs_ids:
                                         not_filled_docs_ids.append(this_doc_id)
@@ -1073,21 +1044,10 @@ def lock_year(mongo ,selected_year=''  ):
                                         else:
                                             is_valid_removal = False
 
-                                            if check_job_type ==1:
-                                                overhead_not_filled_docs.append(this_doc_id)
-                                            if check_job_type ==2:
-                                                underground_not_filled_docs.append(this_doc_id)
-
-
                                             if this_doc_id not in not_filled_docs_ids:
                                                 not_filled_docs_ids.append(this_doc_id)
                                                 not_filled_docs.append({"id":this_doc_id , "job_number":doc['job_number'] ,"job_owner":doc['job_owner'] })
                                     else:
-                                        if check_job_type ==1:
-                                            overhead_not_filled_docs.append(this_doc_id)
-                                        if check_job_type ==2:
-                                            underground_not_filled_docs.append(this_doc_id)
-
 
                                         if this_doc_id not in not_filled_docs_ids:
                                             not_filled_docs_ids.append(this_doc_id)
@@ -1097,10 +1057,6 @@ def lock_year(mongo ,selected_year=''  ):
                     if is_valid_addition or is_valid_reconductor or is_valid_removal:
                         pass
                     else:
-                        if check_job_type ==1:
-                            overhead_not_filled_docs.append(this_doc_id)
-                        if check_job_type ==2:
-                            underground_not_filled_docs.append(this_doc_id)
 
                         if this_doc_id not in not_filled_docs_ids:
                             not_filled_docs_ids.append(this_doc_id)
@@ -1109,11 +1065,6 @@ def lock_year(mongo ,selected_year=''  ):
 
 
                 else:
-                    if check_job_type ==1:
-                        overhead_not_filled_docs.append(this_doc_id)
-                    if check_job_type ==2:
-                        underground_not_filled_docs.append(this_doc_id)
-
 
                     if this_doc_id not in not_filled_docs_ids:
                         not_filled_docs_ids.append(this_doc_id)
@@ -1124,13 +1075,13 @@ def lock_year(mongo ,selected_year=''  ):
                 #print(type(doc))
 
     return_data ={"update_result":0 ,"not_filled_docs":[]}
-    if len(temp_list)>0 and len(not_filled_docs) >0:
+    if len(temp_list)>0 and len(not_filled_docs) ==0:
 
 
         if len(overhead_not_filled_docs) >0:
             where_condation ={}
             update_data ={}
-            where_condation["_id"] ={"$in":overhead_not_filled_docs}
+            where_condation["_id"] ={"$in":overhead_filled_docs}
             where_condation["overhead"] ={"$exists":1}
             where_condation["overhead.is_itlocked"] ={"$exists":1}
             update_data['overhead.is_itlocked'] =1
@@ -1140,7 +1091,7 @@ def lock_year(mongo ,selected_year=''  ):
         if len(underground_not_filled_docs)>0:
             where_condation ={}
             update_data ={}
-            where_condation["_id"] ={"$in":underground_not_filled_docs}
+            where_condation["_id"] ={"$in":underground_filled_docs}
             where_condation["underground"] ={"$exists":1}
             where_condation["underground.is_itlocked"] ={"$exists":1}
             update_data['underground.is_itlocked'] =1
