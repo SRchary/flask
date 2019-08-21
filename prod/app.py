@@ -883,7 +883,7 @@ def unlock_year():
 
     return jsonify(return_data)
 
-@app.route( "/lockprojects", methods=['POST'])
+@app.route( "/lockprojects", methods=['GET'])
 def lockprojects():
     action ="" # action should be lock OR unlock
     selected_year = ''
