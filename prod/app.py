@@ -860,7 +860,6 @@ def lock_year():
     return jsonify(return_data)
 
 
-
 @app.route( "/unlock_year", methods=['POST'])
 def unlock_year():
     return_data = {"error":1,"message":"please Try again" ,"locked_count":0}
@@ -881,6 +880,56 @@ def unlock_year():
 
     except Exception as e:
         return_data['message'] =str(e)
+
+    return jsonify(return_data)
+
+def lockprojects():
+    action ="" # action should be lock OR unlock
+    selected_year = ''
+    return_data = {"error":1,"message":"please Try again" ,"locked_count":0}
+    if 'year' in request.args:
+        selected_year = str(request.args.get("year").strip())
+    if "action" in request.args:
+        action = str(request.args.get("action").strip())
+
+    if action=='' or selected_year =='':
+        return_data = {"error":1,"message":"please Try again"}
+        if action =='':
+            return_data['message'] ="Invalid action"
+        if selected_year =='':
+            return_data['message'] ="Invalid year"
+        return jsonify(return_data)
+        pass
+
+    return_data = {"error":1,"message":"please Try again" ,"locked_count":0}
+    if action =="lock":
+        try:
+            result = helper.lock_year(mongo,selected_year)
+            return_data['not_filled_docs'] = result['not_filled_docs']
+            return_data['locked_count'] = result['update_result']
+            if len(return_data['not_filled_docs']) >0:
+                return_data['message'] = "Selected Year is not Locked. Due to invalid Data in Records"
+                return_data['error'] = 0
+
+            else:
+                return_data['message'] = "Sucess Fully Updated..!"
+                return_data['error'] = 0
+
+        except Exception as e:
+            return_data['message'] =str(e)
+
+
+    elif action =="unlock":
+        try:
+            result = helper.unlock_year(mongo,selected_year)
+
+            return_data['unlocked_count'] = result['update_result_count']
+            return_data['message'] = "Successfully updated"
+            return_data['error'] = 0
+
+        except Exception as e:
+            return_data['message'] =str(e)
+
 
     return jsonify(return_data)
 
